@@ -1,0 +1,147 @@
+---
+import type { AcademicBlock } from "../data/academics";
+
+interface Props {
+  blocks: AcademicBlock[];
+}
+
+const { blocks } = Astro.props;
+---
+
+<div class="academic-catalog" data-academic-catalog>
+  <div class="academic-overview" data-academic-overview>
+    <div class="academic-overview-heading">
+      <p class="eyebrow">Explore by subject block</p>
+      <p>{blocks.length} subject blocks · {blocks.reduce((count, block) => count + block.courses.length, 0)} courses</p>
+    </div>
+    <div class="academic-block-grid">
+      {
+        blocks.map((block) => (
+          <button class="academic-block-card" type="button" data-academic-block={block.id} aria-controls={`academic-detail-${block.id}`}>
+            <span class="academic-block-count">{block.courses.length} {block.courses.length === 1 ? "course" : "courses"}</span>
+            <h3>{block.title}</h3>
+            <p>{block.description}</p>
+            <span class="academic-block-arrow" aria-hidden="true">→</span>
+          </button>
+        ))
+      }
+    </div>
+  </div>
+
+  {
+    blocks.map((block) => (
+      <section class="academic-detail" id={`academic-detail-${block.id}`} data-academic-detail={block.id} hidden aria-labelledby={`academic-detail-title-${block.id}`}>
+        <button class="academic-back" type="button" data-academic-back>← All subject blocks</button>
+        <div class="academic-detail-heading">
+          <p class="eyebrow">Academic path</p>
+          <h3 id={`academic-detail-title-${block.id}`}>{block.title}</h3>
+          <p>{block.description}</p>
+        </div>
+        <div class="academic-level-filter" aria-label={`Filter courses in ${block.title} by degree`}>
+          <span>Degree</span>
+          <div class="academic-level-tags">
+            <button class="academic-level-tag is-active" type="button" data-academic-level="all" aria-pressed="true">All</button>
+            <button class="academic-level-tag" type="button" data-academic-level="Bachelor" aria-pressed="false">Bachelor</button>
+            <button class="academic-level-tag" type="button" data-academic-level="Master" aria-pressed="false">Master</button>
+          </div>
+        </div>
+        <ul class="academic-course-list" aria-label={`Courses in ${block.title}`}>
+          {
+            block.courses.map((course) => (
+              <li class={course.status === "In progress" ? "is-in-progress" : undefined} data-academic-course data-degree={course.degree}>
+                <span class="academic-course-copy">
+                  <span class="academic-course-title">{course.title}</span>
+                  <span class="academic-course-original" lang="de">{course.germanTitle}</span>
+                </span>
+                <span class="academic-course-meta">
+                  <strong>{course.degree}</strong>
+                  {course.status && <em>{course.status}</em>}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="academic-empty-state" data-academic-empty-state hidden>No courses match this degree filter.</p>
+        {
+          block.feature && (block.feature.text || block.feature.images?.length) && (
+            <aside class="academic-feature" aria-label={`Additional context for ${block.title}`}>
+              {block.feature.text && <p>{block.feature.text}</p>}
+              {
+                block.feature.images?.length && (
+                  <div class="academic-feature-gallery">
+                    {block.feature.images.map((image) => (
+                      <figure>
+                        <img src={image.src} alt={image.alt} loading="lazy" />
+                        {image.caption && <figcaption>{image.caption}</figcaption>}
+                      </figure>
+                    ))}
+                  </div>
+                )
+              }
+            </aside>
+          )
+        }
+      </section>
+    ))
+  }
+</div>
+
+<script>
+  const catalog = document.querySelector<HTMLElement>("[data-academic-catalog]");
+
+  if (catalog) {
+    const overview = catalog.querySelector<HTMLElement>("[data-academic-overview]");
+    const blockButtons = Array.from(catalog.querySelectorAll<HTMLButtonElement>("[data-academic-block]"));
+    const details = Array.from(catalog.querySelectorAll<HTMLElement>("[data-academic-detail]"));
+    const backButtons = Array.from(catalog.querySelectorAll<HTMLButtonElement>("[data-academic-back]"));
+    let selectedBlock = "";
+
+    const refreshDegreeFilter = (detail: HTMLElement, degree: string) => {
+      const courses = Array.from(detail.querySelectorAll<HTMLElement>("[data-academic-course]"));
+      const levelButtons = Array.from(detail.querySelectorAll<HTMLButtonElement>("[data-academic-level]"));
+      const emptyState = detail.querySelector<HTMLElement>("[data-academic-empty-state]");
+      let visibleCount = 0;
+
+      courses.forEach((course) => {
+        const visible = degree === "all" || course.dataset.degree === degree;
+        course.hidden = !visible;
+        if (visible) visibleCount += 1;
+      });
+
+      levelButtons.forEach((button) => {
+        const active = button.dataset.academicLevel === degree;
+        button.classList.toggle("is-active", active);
+        button.setAttribute("aria-pressed", String(active));
+      });
+
+      if (emptyState) emptyState.hidden = visibleCount !== 0;
+    };
+
+    const selectBlock = (id = "") => {
+      selectedBlock = id;
+      if (overview) overview.hidden = Boolean(id);
+      details.forEach((detail) => {
+        const active = detail.dataset.academicDetail === id;
+        detail.hidden = !active;
+        if (active) refreshDegreeFilter(detail, "all");
+      });
+      blockButtons.forEach((button) => button.setAttribute("aria-expanded", String(button.dataset.academicBlock === id)));
+    };
+
+    blockButtons.forEach((button) => {
+      button.addEventListener("click", () => selectBlock(button.dataset.academicBlock));
+    });
+
+    backButtons.forEach((button) => {
+      button.addEventListener("click", () => selectBlock());
+    });
+
+    details.forEach((detail) => {
+      detail.querySelectorAll<HTMLButtonElement>("[data-academic-level]").forEach((button) => {
+        button.addEventListener("click", () => refreshDegreeFilter(detail, button.dataset.academicLevel ?? "all"));
+      });
+    });
+
+    selectBlock(selectedBlock);
+  }
+</script>

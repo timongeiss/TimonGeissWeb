@@ -1,0 +1,46 @@
+---
+title: "Tutor for Computer Science II (C++)"
+slug: "computer-science-ii-tutor"
+period: "March 2023 — July 2023"
+sortDate: "2023-03-01"
+organization: "Ostbayerische Technische Hochschule Regensburg · Faculty of Electrical and Information Engineering"
+tags:
+  - "Software Systems"
+  - "C++"
+  - "Lead"
+images:
+  - src: "/projects/computer-science-ii-tutor/Info2tutor_Legende.png"
+    alt: "Legend for the anonymous Computer Science II tutorial evaluation"
+    caption: "Legend for the evaluation scale."
+  - src: "/projects/computer-science-ii-tutor/Info2tutor_Aufgaben.png"
+    alt: "Student evaluation of the tutorial exercises"
+    caption: "Evaluation of the tutorial exercises."
+  - src: "/projects/computer-science-ii-tutor/Info2tutor_Atmos.png"
+    alt: "Student evaluation of the tutorial atmosphere"
+    caption: "Evaluation of the tutorial atmosphere."
+  - src: "/projects/computer-science-ii-tutor/Info2tutor_Erklaerungen.png"
+    alt: "Student evaluation of the clarity of explanations"
+    caption: "Evaluation of the clarity of explanations."
+  - src: "/projects/computer-science-ii-tutor/Info2tutor_Fragen.png"
+    alt: "Student evaluation of opportunities to ask questions"
+    caption: "Evaluation of opportunities to ask questions."
+  - src: "/projects/computer-science-ii-tutor/Info2tutor_Gelernt.png"
+    alt: "Student evaluation of learning outcomes"
+    caption: "Evaluation of perceived learning outcomes."
+  - src: "/projects/computer-science-ii-tutor/Info2tutor_Kompetenz.png"
+    alt: "Student evaluation of tutor expertise"
+    caption: "Evaluation of tutor expertise."
+  - src: "/projects/computer-science-ii-tutor/Info2tutor_Motiv.png"
+    alt: "Student evaluation of student motivation"
+    caption: "Evaluation of student motivation."
+  - src: "/projects/computer-science-ii-tutor/Info2tutor_Tutor.png"
+    alt: "Student evaluation of tutor performance"
+    caption: "Overall evaluation of tutor performance."
+  - src: "/projects/computer-science-ii-tutor/Info2tutor_Visual.png"
+    alt: "Student evaluation of visual presentation"
+    caption: "Evaluation of visual presentation."
+links: []
+---
+## Teaching scope
+
+The tutorial accompanied the second-semester Computer Science II lecture and practical exercises at OTH Regensburg. Two weekly tutorial sessions addressed course questions and programming concepts, with particular emphasis on the foundations of object-oriented programming in C++. At the end of the semester, the course was rated as good by the students in an anonymous evaluation.

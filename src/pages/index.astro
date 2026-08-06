@@ -1,0 +1,141 @@
+---
+import { getCollection } from "astro:content";
+import AcademicCatalog from "../components/AcademicCatalog.astro";
+import ContactEmails from "../components/ContactEmails.astro";
+import ContactLinks from "../components/ContactLinks.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import ProjectFilters from "../components/ProjectFilters.astro";
+import { academicBlocks } from "../data/academics";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const projects = (await getCollection("projects")).sort((a, b) => b.data.sortDate.localeCompare(a.data.sortDate));
+---
+
+<BaseLayout>
+  <section class="hero site-shell" aria-label="Introduction">
+    <div class="hero-portrait-wrap">
+      <div class="hero-portrait-frame">
+        <img src="/Timon-lowestquali - Kopie.png" alt="Portrait of Timon Geiss" width="952" height="656" />
+      </div>
+      <ContactLinks />
+    </div>
+    <div class="hero-copy">
+      <p class="eyebrow">Electrical Power Engineering · Sustainable Energy Systems</p>
+      <h1 id="intro-title" class="visually-hidden">Timon Geiss</h1>
+      <p class="hero-lead">
+        Currently I am pursuing a Master’s degree in Electrical Power Engineering and Sustainable Energy Systems at TU Wien in Austria. Previously I completed a Bachelor’s degree in Renewable Energy Engineering and Energy Efficiency at Ostbayerische Technische Hochschule (OTH) Regensburg, Germany.
+      </p>
+      <p>
+        Since 2023, I work at the Research Center for Energy Networks and Energy Storage (Forschungsstelle für Energienetze und Energiespeicher) at the OTH Regensburg. Prior to that, I spent two years working on projects in technical consulting with umlaut energy as part of Accenture.
+      </p>
+      <p>
+        My academic and professional interests focus on energy networks, PtX and industrial energy systems, with particular emphasis on modelling, optimisation and forecasting. The portfolio below brings together research, consulting and entrepreneurial projects in which I served as Lead, Project Driver or Contributor.
+      </p>
+      <a class="text-link" href="#projects">Explore selected projects <span aria-hidden="true">↓</span></a>
+    </div>
+  </section>
+
+  <div class="portfolio" id="portfolio" data-portfolio>
+    <div class="portfolio-tab-area">
+      <div class="site-shell">
+      <div class="portfolio-switch" role="tablist" aria-label="Portfolio view">
+        <button id="projects-tab" type="button" role="tab" aria-selected="true" aria-controls="projects" data-portfolio-view="projects">Projects</button>
+        <button id="academic-tab" type="button" role="tab" aria-selected="false" aria-controls="academic" data-portfolio-view="academic">Academic Path</button>
+      </div>
+      </div>
+    </div>
+
+    <section class="projects-section portfolio-section" data-portfolio-section aria-label="Portfolio overview">
+      <div class="site-shell">
+
+      <div id="projects" role="tabpanel" aria-labelledby="projects-tab" data-portfolio-panel="projects">
+        <h2 id="projects-title" class="visually-hidden">Selected projects</h2>
+        <div class="section-intro">
+          <p class="eyebrow">Selected work</p>
+          <ProjectFilters projects={projects.map((project) => ({ tags: project.data.tags }))} />
+        </div>
+
+        <div class="project-timeline" data-project-grid>
+          {
+            projects.map((project) => (
+              <ProjectCard
+                slug={project.data.slug}
+                title={project.data.title}
+                organization={project.data.organization}
+                year={project.data.sortDate.slice(0, 4)}
+                tags={project.data.tags}
+              />
+            ))
+          }
+        </div>
+        <p class="empty-state" data-empty-state hidden>No projects match this combination of filters.</p>
+      </div>
+
+      <div id="academic" role="tabpanel" aria-labelledby="academic-tab" data-portfolio-panel="academic">
+        <AcademicCatalog blocks={academicBlocks} />
+      </div>
+      </div>
+    </section>
+    </div>
+
+  <ContactEmails />
+</BaseLayout>
+
+<script>
+  const portfolio = document.querySelector<HTMLElement>("[data-portfolio]");
+
+  if (portfolio) {
+    const portfolioSection = portfolio.querySelector<HTMLElement>("[data-portfolio-section]");
+    const panels = Array.from(portfolio.querySelectorAll<HTMLElement>("[data-portfolio-panel]"));
+    const viewButtons = Array.from(portfolio.querySelectorAll<HTMLButtonElement>("[data-portfolio-view]"));
+    const navigationLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-portfolio-nav]"));
+    const validViews = new Set(["projects", "academic"]);
+
+    const viewFromHash = () => (window.location.hash === "#academic" ? "academic" : "projects");
+
+    const selectView = (view: string) => {
+      const selectedView = validViews.has(view) ? view : "projects";
+      portfolio.classList.toggle("is-academic", selectedView === "academic");
+      portfolioSection?.classList.toggle("is-academic", selectedView === "academic");
+      panels.forEach((panel) => {
+        panel.hidden = panel.dataset.portfolioPanel !== selectedView;
+      });
+      viewButtons.forEach((button) => {
+        const active = button.dataset.portfolioView === selectedView;
+        button.classList.toggle("is-active", active);
+        button.setAttribute("aria-selected", String(active));
+      });
+      navigationLinks.forEach((link) => {
+        const active = link.dataset.portfolioNav === selectedView;
+        if (active) link.setAttribute("aria-current", "true");
+        else link.removeAttribute("aria-current");
+      });
+    };
+
+    const selectViewFromHash = () => selectView(viewFromHash());
+
+    viewButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const view = button.dataset.portfolioView ?? "projects";
+        selectView(view);
+        const hash = view === "academic" ? "#academic" : "#projects";
+        if (window.location.hash === hash) {
+          document.getElementById(view)?.scrollIntoView();
+        } else {
+          window.location.hash = hash;
+        }
+      });
+    });
+
+    navigationLinks.forEach((link) => {
+      link.addEventListener("click", () => selectView(link.dataset.portfolioNav ?? "projects"));
+    });
+
+    selectViewFromHash();
+    window.addEventListener("hashchange", selectViewFromHash);
+
+    if (window.location.hash === "#projects" || window.location.hash === "#academic") {
+      requestAnimationFrame(() => document.getElementById(viewFromHash())?.scrollIntoView());
+    }
+  }
+</script>

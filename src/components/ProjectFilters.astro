@@ -1,0 +1,119 @@
+---
+import { tagGroups } from "../data/taxonomy";
+
+interface Project {
+  tags: string[];
+}
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+const tagUsage = new Map<string, number>();
+const tagOrder = new Map<string, number>();
+
+projects.flatMap((project) => project.tags).forEach((tag) => {
+  tagUsage.set(tag, (tagUsage.get(tag) ?? 0) + 1);
+});
+
+tagGroups.forEach((group) => {
+  group.tags.forEach((tag, index) => tagOrder.set(tag, index));
+});
+
+const sortedTagGroups = tagGroups.map((group) => ({
+  ...group,
+  tags: [...group.tags].sort((a, b) => {
+    const usageDifference = (tagUsage.get(b) ?? 0) - (tagUsage.get(a) ?? 0);
+    return usageDifference || (tagOrder.get(a) ?? 0) - (tagOrder.get(b) ?? 0);
+  }),
+}));
+---
+
+<section class="project-filter" data-project-filter aria-label="Project filters">
+  <div class="filter-heading">
+    <p class="eyebrow">Explore by focus</p>
+    <button class="filter-reset" type="button" data-filter-reset disabled>Clear filters</button>
+  </div>
+  <div class="filter-groups">
+    {
+      sortedTagGroups.map((group) => (
+        <fieldset class="filter-group">
+          <legend>{group.title}</legend>
+          <div class="filter-tags">
+            {group.tags.map((tag) => {
+              const count = tagUsage.get(tag) ?? 0;
+              const enabled = count > 0;
+              return (
+                <button
+                  class="filter-tag"
+                  type="button"
+                  data-filter-tag={tag}
+                  aria-pressed="false"
+                  disabled={!enabled}
+                  title={enabled ? `Filter by ${tag} (${count} projects)` : `No project currently uses ${tag}`}
+                >
+                  {tag}
+                </button>
+              );
+            })}
+          </div>
+        </fieldset>
+      ))
+    }
+  </div>
+  <p class="filter-result" data-filter-result aria-live="polite">Showing all projects</p>
+</section>
+
+<script>
+  const filter = document.querySelector<HTMLElement>("[data-project-filter]");
+
+  if (filter) {
+    const activeTags = new Set<string>();
+    const tagButtons = Array.from(filter.querySelectorAll<HTMLButtonElement>("[data-filter-tag]"));
+    const resetButton = filter.querySelector<HTMLButtonElement>("[data-filter-reset]");
+    const result = filter.querySelector<HTMLElement>("[data-filter-result]");
+    const cards = Array.from(document.querySelectorAll<HTMLElement>("[data-project-card]"));
+    const emptyState = document.querySelector<HTMLElement>("[data-empty-state]");
+
+    const refresh = () => {
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const cardTags: string[] = JSON.parse(card.dataset.tags || "[]");
+        const matches = [...activeTags].every((tag) => cardTags.includes(tag));
+        card.hidden = !matches;
+        if (matches) visibleCount += 1;
+      });
+
+      tagButtons.forEach((button) => {
+        const tag = button.dataset.filterTag;
+        const active = tag ? activeTags.has(tag) : false;
+        button.classList.toggle("is-active", active);
+        button.setAttribute("aria-pressed", String(active));
+      });
+
+      if (resetButton) resetButton.disabled = activeTags.size === 0;
+      if (emptyState) emptyState.hidden = visibleCount !== 0;
+      if (result) {
+        result.textContent = activeTags.size === 0
+          ? "Showing all projects"
+          : `${visibleCount} ${visibleCount === 1 ? "project" : "projects"} matching all selected filters`;
+      }
+    };
+
+    tagButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const tag = button.dataset.filterTag;
+        if (!tag) return;
+        activeTags.has(tag) ? activeTags.delete(tag) : activeTags.add(tag);
+        refresh();
+      });
+    });
+
+    resetButton?.addEventListener("click", () => {
+      activeTags.clear();
+      refresh();
+    });
+  }
+</script>
