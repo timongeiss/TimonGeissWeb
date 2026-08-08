@@ -1,5 +1,5 @@
 import { promises as fs } from "node:fs";
-import { dirname, extname, join } from "node:path";
+import { dirname, extname, join, relative } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 /**
@@ -15,6 +15,7 @@ export function localMarkdownProjects() {
     async load(context) {
       const directory = new URL("./src/content/projects/", context.config.root);
       const directoryPath = fileURLToPath(directory);
+      const rootPath = fileURLToPath(context.config.root);
       const entryType = context.entryTypes.get(".md");
 
       if (!entryType) {
@@ -37,6 +38,7 @@ export function localMarkdownProjects() {
 
         for (const name of files) {
           const filePath = join(directoryPath, name);
+          const relativeFilePath = relative(rootPath, filePath);
           const fileUrl = pathToFileURL(filePath);
           const contents = await fs.readFile(filePath, "utf-8");
           const { body, data } = await entryType.getEntryInfo({ contents, fileUrl });
@@ -52,7 +54,7 @@ export function localMarkdownProjects() {
             data: parsedData,
             body,
             digest,
-            filePath,
+            filePath: relativeFilePath,
             rendered,
             assetImports: rendered?.metadata?.imagePaths,
           });
