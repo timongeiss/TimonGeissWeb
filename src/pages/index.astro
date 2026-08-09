@@ -72,7 +72,7 @@ const projects = (await getCollection("projects")).sort((a, b) => b.data.sortDat
         <p class="empty-state" data-empty-state hidden>No projects match this combination of filters.</p>
       </div>
 
-      <div id="academic" role="tabpanel" aria-labelledby="academic-tab" data-portfolio-panel="academic">
+      <div id="academic" role="tabpanel" aria-labelledby="academic-tab" data-portfolio-panel="academic" hidden>
         <AcademicCatalog blocks={academicBlocks} />
       </div>
       </div>
