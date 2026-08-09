@@ -40,7 +40,7 @@ const projects = (await getCollection("projects")).sort((a, b) => b.data.sortDat
       <div class="site-shell">
       <div class="portfolio-switch" role="tablist" aria-label="Portfolio view">
         <button id="projects-tab" type="button" role="tab" aria-selected="true" aria-controls="projects" data-portfolio-view="projects">Projects</button>
-        <button id="academic-tab" type="button" role="tab" aria-selected="false" aria-controls="academic" data-portfolio-view="academic">Academic Path</button>
+        <button id="academic-tab" type="button" role="tab" aria-selected="false" aria-controls="academic" data-portfolio-view="academic">Academic Focus</button>
       </div>
       </div>
     </div>
@@ -91,7 +91,11 @@ const projects = (await getCollection("projects")).sort((a, b) => b.data.sortDat
     const navigationLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-portfolio-nav]"));
     const validViews = new Set(["projects", "academic"]);
 
-    const viewFromHash = () => (window.location.hash === "#academic" ? "academic" : "projects");
+    const viewFromHash = () => {
+      if (window.location.hash === "#academic") return "academic";
+      if (window.location.hash === "#projects") return "projects";
+      return null;
+    };
 
     const selectView = (view: string) => {
       const selectedView = validViews.has(view) ? view : "projects";
@@ -112,7 +116,10 @@ const projects = (await getCollection("projects")).sort((a, b) => b.data.sortDat
       });
     };
 
-    const selectViewFromHash = () => selectView(viewFromHash());
+    const selectViewFromHash = () => {
+      const view = viewFromHash();
+      if (view) selectView(view);
+    };
 
     viewButtons.forEach((button) => {
       button.addEventListener("click", () => {
@@ -134,8 +141,9 @@ const projects = (await getCollection("projects")).sort((a, b) => b.data.sortDat
     selectViewFromHash();
     window.addEventListener("hashchange", selectViewFromHash);
 
-    if (window.location.hash === "#projects" || window.location.hash === "#academic") {
-      requestAnimationFrame(() => document.getElementById(viewFromHash())?.scrollIntoView());
+    const initialView = viewFromHash();
+    if (initialView) {
+      requestAnimationFrame(() => document.getElementById(initialView)?.scrollIntoView());
     }
   }
 </script>
