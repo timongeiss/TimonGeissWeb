@@ -20,6 +20,9 @@ images:
   - src: "/projects/probabilistic-pv-dataset-generator/20250924_TP_SGA_Poster.png"
     alt: "Scientific Poster for the Smart Grids Austria industry and stakeholder event."
     caption: "Scientific Poster for the Smart Grids Austria industry and stakeholder event."
+  - src: "/projects/probabilistic-pv-dataset-generator/probPV_tsne.png"
+    alt: "t-SNE embedding of PV power paths grouped into representative scenario clusters"
+    caption: "PV power paths clustered into representative scenarios using t-SNE."
 links: []
 ---
 ## Research objective

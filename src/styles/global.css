@@ -82,13 +82,16 @@ nav a:hover, nav a[aria-current="true"] { color: var(--blue); }
 .project-year { color: #8bc5e5; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.06em; padding-top: 1.55rem; }
 .timeline-track { border-left: 1px solid rgba(255, 255, 255, 0.32); position: relative; }
 .timeline-track::before { background: #8bc5e5; border: 3px solid var(--ink); border-radius: 50%; content: ""; height: 11px; left: -6px; position: absolute; top: 1.55rem; width: 11px; }
-.project-card-link { border-bottom: 1px solid rgba(255, 255, 255, 0.22); display: block; padding: 1.35rem 3rem 1.45rem 1.2rem; position: relative; text-decoration: none; transition: background 160ms ease; }
+.project-card-link { border-bottom: 1px solid rgba(255, 255, 255, 0.22); display: block; padding: 1.35rem 1.2rem 1.45rem; position: relative; text-decoration: none; transition: background 160ms ease; }
 .project-card-link:hover { background: rgba(255, 255, 255, 0.045); }
+.project-card-link.has-banner { align-items: center; display: grid; gap: 1.25rem; grid-template-columns: minmax(0, 1fr) clamp(8.5rem, 18vw, 12.5rem); }
+.project-card-copy { min-width: 0; padding-right: 2.5rem; position: relative; }
+.project-card-banner { aspect-ratio: 5 / 4; object-fit: cover; width: 100%; }
 .project-card h3 { font-size: clamp(1.15rem, 1.8vw, 1.45rem); font-weight: 650; letter-spacing: -0.04em; line-height: 1.2; margin: 0 0 0.55rem; max-width: 840px; }
 .project-card p { color: #b6c5cf; font-size: 0.83rem; line-height: 1.5; margin: 0; }
-.project-card-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.8rem; padding-right: 1.5rem; }
+.project-card-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.8rem; }
 .project-card-tags span { border: 1px solid rgba(255, 255, 255, 0.24); border-radius: 999px; color: #b6c5cf; font-size: 0.66rem; font-weight: 650; line-height: 1.2; padding: 0.31rem 0.48rem; }
-.project-card-arrow { color: #8bc5e5; font-size: 1.15rem; position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); }
+.project-card-arrow { color: #8bc5e5; font-size: 1.15rem; position: absolute; right: 0; top: 50%; transform: translateY(-50%); }
 .empty-state { border: 1px solid rgba(255, 255, 255, 0.28); color: #b6c5cf; margin: 2rem 0 0; padding: 1.5rem; }
 
 .academic-catalog { margin-top: 0; }
@@ -159,7 +162,10 @@ nav a:hover, nav a[aria-current="true"] { color: var(--blue); }
 .project-page { padding-top: clamp(3rem, 7vw, 7rem); padding-bottom: clamp(5rem, 10vw, 9rem); }
 .back-link { margin: 0 0 clamp(3rem, 6vw, 5.5rem); }
 .project-header { max-width: 950px; }
+.project-header.has-banner { align-items: end; display: grid; gap: clamp(1.5rem, 5vw, 4rem); grid-template-columns: minmax(0, 1fr) minmax(190px, 340px); max-width: none; }
 .project-header h1 { font-size: clamp(2.3rem, 4.7vw, 4.25rem); line-height: 1; margin-bottom: 1.35rem; }
+.project-header.has-banner h1 { font-size: clamp(2rem, 3.6vw, 3.45rem); }
+.project-header-banner { aspect-ratio: 5 / 4; object-fit: cover; width: 100%; }
 .project-meta { border-bottom: 1px solid var(--line); border-top: 1px solid var(--line); display: grid; gap: 1.5rem; grid-template-columns: 0.65fr 1.35fr; margin: clamp(3rem, 7vw, 6rem) 0; padding: 1.4rem 0; }
 .project-meta div { display: grid; gap: 0.38rem; }
 .project-meta span, .project-aside h2 { color: var(--ink-soft); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.09em; margin: 0; text-transform: uppercase; }
@@ -214,6 +220,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid #e4a23c; outline-offs
   .academic-block-grid { grid-template-columns: 1fr; }
   .filter-result { margin-top: 0.2rem; }
   .project-card { grid-template-columns: 4.5rem 22px minmax(0, 1fr); }
+  .project-header.has-banner { grid-template-columns: minmax(0, 1fr) minmax(150px, 250px); }
   .project-meta, .project-detail-grid { grid-template-columns: 1fr; }
   .project-meta { gap: 1.2rem; }
   .project-aside { border-bottom: 1px solid var(--line); grid-template-columns: 1fr 1fr; padding-bottom: 2rem; }
@@ -235,5 +242,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid #e4a23c; outline-offs
   .hero h1 { font-size: clamp(2.6rem, 13vw, 3.3rem); }
   .contact-links a { font-size: 0.72rem; }
   .project-aside { grid-template-columns: 1fr; }
+  .project-card-link.has-banner, .project-header.has-banner { grid-template-columns: 1fr; }
+  .project-header-banner { max-width: 260px; }
   .project-prose table { display: block; overflow-x: auto; white-space: nowrap; }
 }

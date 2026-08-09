@@ -31,6 +31,9 @@ images:
   - src: "/projects/transfer-learning-pv-forecasting/python_overview2.png"
     alt: "Architecture overview of the model evaluation and reporting workflow"
     caption: "Python workflow: model evaluation and reporting architecture."
+  - src: "/projects/transfer-learning-pv-forecasting/20250810_transfer_dispatch.png"
+    alt: "PV forecast, battery dispatch, grid exchange and revenue time series for a representative day"
+    caption: "Representative day-ahead dispatch with PV, battery, grid exchange and revenue components."
 links:
   - label: "Python Project on GitHub"
     href: "https://github.com/timongeiss/masterthesis_timongeiss"

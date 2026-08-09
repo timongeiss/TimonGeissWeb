@@ -11,6 +11,7 @@ const projects = defineCollection({
     period: z.string(),
     sortDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     organization: z.string(),
+    banner: z.string().optional(),
     tags: z.array(z.enum(TAGS)).min(1).superRefine((tags, context) => {
       const selectedTags = tags as readonly string[];
       const roleCount = ROLE_TAGS.filter((tag) => selectedTags.includes(tag)).length;

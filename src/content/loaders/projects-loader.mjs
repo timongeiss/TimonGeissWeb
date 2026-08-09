@@ -18,6 +18,24 @@ export function localMarkdownProjects() {
       const rootPath = fileURLToPath(context.config.root);
       const entryType = context.entryTypes.get(".md");
 
+      const findBanner = async (slug) => {
+        const bannerDirectory = join(rootPath, "public", "projects", slug);
+
+        try {
+          const entries = await fs.readdir(bannerDirectory, { withFileTypes: true });
+          const bannerName = entries
+            .filter((entry) => entry.isFile() && /_banner\.(avif|jpe?g|png|webp)$/i.test(entry.name))
+            .map((entry) => entry.name)
+            .sort((first, second) => first.localeCompare(second))
+            .at(0);
+
+          return bannerName ? `/projects/${slug}/${encodeURIComponent(bannerName)}` : undefined;
+        } catch (error) {
+          if (error?.code === "ENOENT") return undefined;
+          throw error;
+        }
+      };
+
       if (!entryType) {
         context.logger.error("Markdown support is unavailable for the projects collection.");
         return;
@@ -43,6 +61,8 @@ export function localMarkdownProjects() {
           const contents = await fs.readFile(filePath, "utf-8");
           const { body, data } = await entryType.getEntryInfo({ contents, fileUrl });
           const id = String(data.slug ?? name.slice(0, -3));
+          const banner = await findBanner(id);
+          if (banner) data.banner = banner;
           const parsedData = await context.parseData({ id, data, filePath });
           const digest = context.generateDigest(contents);
           const rendered = render

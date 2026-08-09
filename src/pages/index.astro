@@ -64,6 +64,7 @@ const projects = (await getCollection("projects")).sort((a, b) => b.data.sortDat
                 organization={project.data.organization}
                 year={project.data.sortDate.slice(0, 4)}
                 tags={project.data.tags}
+                banner={project.data.banner}
               />
             ))
           }

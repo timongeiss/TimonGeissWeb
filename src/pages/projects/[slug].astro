@@ -18,9 +18,12 @@ const isOngoing = /\b(present|today)\b/i.test(project.data.period);
 <BaseLayout title={`${project.data.title} — Timon Geiss`}>
   <article class="project-page site-shell">
     <a class="back-link" href="/#projects">← All projects</a>
-    <header class="project-header">
-      <p class="eyebrow">{isOngoing ? "Ongoing project" : "Project"}</p>
-      <h1>{project.data.title}</h1>
+    <header class:list={["project-header", { "has-banner": Boolean(project.data.banner) }]}>
+      <div class="project-header-copy">
+        <p class="eyebrow">{isOngoing ? "Ongoing project" : "Project"}</p>
+        <h1>{project.data.title}</h1>
+      </div>
+      {project.data.banner && <img class="project-header-banner" src={project.data.banner} alt="" decoding="async" />}
     </header>
 
     <div class="project-meta" aria-label="Project information">
