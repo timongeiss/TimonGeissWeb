@@ -139,7 +139,7 @@ const projects = (await getCollection("projects")).sort((a, b) => b.data.sortDat
       link.addEventListener("click", () => selectView(link.dataset.portfolioNav ?? "projects"));
     });
 
-    selectViewFromHash();
+    selectView(viewFromHash() ?? "projects");
     window.addEventListener("hashchange", selectViewFromHash);
 
     const initialView = viewFromHash();
