@@ -81,6 +81,6 @@ procurement cost of 27 euro. It is therefore the most effective strategy for the
 cold-start setting and for data-scarcity situations with up to 60 days of system-specific
 data. Day-ahead market participation remains beneficial compared with a feed-in tariff
 of 5 ct/kWh, but is no longer advantageous from 6 ct/kWh onward.
-The economic evaluation further shows that overforecasting is more harmful than underforecasting, with an average imbalance-related cash flow of -0.14 euro/kWh compared with +0.07 euro/kWh for underforecasts. Deviations leading to unplanned imports are
+The economic evaluation further shows that overforecasting is more harmful than underforecasting, with an average imbalance-related cash flow of -0.14 euro/kWh compared with +0.06 euro/kWh for underforecasts. Deviations leading to unplanned imports are
 the most costly, while unexpected exports cause little economic damage. PV forecasting
 models for day-ahead dispatch should therefore penalize overforecasts more strongly.
