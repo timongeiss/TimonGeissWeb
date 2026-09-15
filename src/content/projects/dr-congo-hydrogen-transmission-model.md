@@ -1,5 +1,5 @@
 ---
-title: "A Constrained PyPSA Earth Based Energy System Model for the Democratic Republic of the Congo - Implications for Hydrogen Export from Hydropower under Real-World Conditions"
+title: "Tailored PyPSA Energy System Models for the Democratic Republic of the Congo: Implications for Hydrogen Export from Hydropower"
 slug: "dr-congo-hydrogen-transmission-model"
 period: "January 2026— Present"
 sortDate: "2026-03-01"
@@ -29,9 +29,11 @@ links:
     type: "external"
 ---
 ## Publication
-This publication is currently finialized und submitted soon. The models will then be published in GitHub.
+This publication is currently under review.
+The models are published in GitHub: https://github.com/timongeiss/pypsa-earth-drc-myopic (https://doi.org/10.5281/zenodo.22764154).
+The result data are published here: https://doi.org/10.5281/zenodo.22734263
 
 ## Research objective
-The Democratic Republic of the Congo has enormous hydropower potential, while its current electricity system is characterized by low supply rates, limited plant availability, unconnected subnetworks, and load shedding. This study examines what additional infrastructure is required to first meet the projected domestic electricity demand and subsequently produce green hydrogen for export. To this end, three spatially resolved, cost-optimizing PyPSA-Earth models are developed for 2025, 2035, and 2050. Unlike pure potential analyses conducted using PyPSA-Earth Snakemake processes, the models take into account literature-based power plant projects, technical expansion limits, the existing and planned grid topology, reduced hydropower availability, and a regional breakdown of demand into grid-connected and decentralized supply.
-The reference model for 2025 replicates the scale of the reported electricity supply with approximately 11.3 TWh of hydropower generation. It also includes about 1.8 TWh of unmet grid-connected demand as well as additional oil-based backup power, thereby reflecting the real challenges facing the energy sector. In the 2035 model, total domestic demand of approximately 60 TWh can be met without load shedding. This requires the rehabilitation of existing facilities, additional regional hydropower and photovoltaic capacity, grid expansion, and decentralized off-grid systems. Full development of the large hydropower projects on the lower Congo River is not necessary for this. For 2050, in addition to domestic demand of around 150 TWh, hydrogen exports ranging from 0.7 to 4.0 Mt per year are examined. Optimal production is concentrated primarily on large pumped-storage hydropower projects on the lower Congo River and on electrolysis capacities in the Kinshasa–Boma region. The annualized system costs rise from approximately 5.3 billion EUR without exports to 6.7 to 13.7 billion EUR per year.
-More results to follow.
+European demand for renewable hydrogen imports has increased interest in potential export regions with abundant renewable resources. However, detailed energy-system transition studies for the Democratic Republic of the Congo (DRC) remain scarce. This work develops a country-calibrated, spatially resolved PyPSA-Earth model that represents the existing electricity system, observed supply conditions, project availability, operational constraints, and on- and off-grid electrification. Sequential hourly optimizations for 2025, 2035, and 2050 prioritize domestic electricity demand before assessing renewable hydrogen exports of up to 4.0 Mt/a.
+
+The results indicate that timely infrastructure deployment, rather than resource availability, is a key constraint. Meeting domestic demand in 2035 requires 8.3 GW of additional hydropower, while earlier availability of large Lower Congo projects reduces this requirement to about 4.4 GW and limits intermediate dispersed run-of-river development. Hydrogen exports primarily scale rather than restructure the 2050 system: at 4.0 Mt/a of hydrogen exports, reservoir capacity reaches 39.8 GW while system-level hydrogen costs remain around 2.1 EUR/kg at the domestic export boundary. The results support staged Lower Congo development, where hydropower projects serving domestic electrification can also provide the basis for later hydrogen-export expansion and associated public-private investment.
